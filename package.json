@@ -24,6 +24,7 @@
     "ora": "5.4.0"
   },
   "devDependencies": {
+    "@thaicoding/prettier-config": "1.2.1",
     "cz-conventional-changelog": "3.3.0",
     "esbuild": "0.11.10"
   },
