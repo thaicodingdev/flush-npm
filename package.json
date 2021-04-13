@@ -9,7 +9,8 @@
   "scripts": {
     "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js && chmod +x cli.js",
     "prepack": "npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pretest": "npm run build",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -31,9 +32,14 @@
   "devDependencies": {
     "@thaicoding/eslint-config": "2.0.0",
     "@thaicoding/prettier-config": "1.2.1",
+    "@types/jest": "26.0.22",
+    "@types/node": "14.14.37",
     "@typescript-eslint/parser": "4.20.0",
     "cz-conventional-changelog": "3.3.0",
     "esbuild": "0.11.10",
+    "fsify": "4.0.2",
+    "jest": "26.6.3",
+    "ts-jest": "26.5.4",
     "typescript": "4.2.4"
   },
   "config": {
