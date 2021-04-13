@@ -1,7 +1,15 @@
 #!/usr/bin/env node
 
 import execa from 'execa'
+import fs from 'fs'
 import ora from 'ora'
+import path from 'path'
+
+const cwd = process.cwd()
+const packageJsonPath = path.join(cwd, 'package.json')
+const isNpmPackage = fs.existsSync(packageJsonPath)
+if (isNpmPackage) main()
+else console.log('Not an npm package')
 
 async function main() {
   const spinner = ora('Removing node_modules')
@@ -32,5 +40,3 @@ async function main() {
     spinner.stopAndPersist(error.message)
   }
 }
-
-main()
