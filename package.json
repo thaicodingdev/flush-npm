@@ -2,9 +2,13 @@
   "name": "flush-npm",
   "version": "1.0.0",
   "description": "Remove node_modules/ and package-lock.json, then run `npm install`",
-  "main": "index.js",
+  "bin": {
+    "flush-npm": "./cli.js"
+  },
+  "main": "cli.js",
   "scripts": {
-    "build": "esbuild src/index.js --bundle --platform=node --outfile=index.js",
+    "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js && chmod +x cli.js",
+    "prepack": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,12 +25,16 @@
   },
   "homepage": "https://github.com/thaicodingdev/flush-npm#readme",
   "dependencies": {
+    "execa": "5.0.0",
     "ora": "5.4.0"
   },
   "devDependencies": {
+    "@thaicoding/eslint-config": "2.0.0",
     "@thaicoding/prettier-config": "1.2.1",
+    "@typescript-eslint/parser": "4.20.0",
     "cz-conventional-changelog": "3.3.0",
-    "esbuild": "0.11.10"
+    "esbuild": "0.11.10",
+    "typescript": "4.2.4"
   },
   "config": {
     "commitizen": {

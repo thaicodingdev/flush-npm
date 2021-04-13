@@ -8398,8 +8398,30 @@ var require_ora = __commonJS((exports2, module2) => {
 var import_execa = __toModule(require_execa());
 var import_ora = __toModule(require_ora());
 async function main() {
-  const spinner = (0, import_ora.default)("removing node_modules");
+  const spinner = (0, import_ora.default)("Removing node_modules");
   spinner.start();
-  await (0, import_execa.default)("rm", ["-rf", "node_modules"]);
+  try {
+    await (0, import_execa.default)("rm", ["-rf", "node_modules"]);
+    spinner.succeed();
+  } catch (error) {
+    spinner.stop();
+    console.error(error.message);
+  }
+  spinner.text = "Removing package-lock.json";
+  spinner.start();
+  try {
+    await (0, import_execa.default)("rm", ["package-lock.json"]);
+    spinner.succeed();
+  } catch (error) {
+    spinner.info("no package-lock.json");
+  }
+  spinner.text = "Installing dependencies";
+  spinner.start();
+  try {
+    await (0, import_execa.default)("npm", ["install"]);
+    spinner.succeed();
+  } catch (error) {
+    spinner.stopAndPersist(error.message);
+  }
 }
 main();
