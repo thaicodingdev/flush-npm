@@ -1,6 +1,6 @@
 {
   "name": "flush-npm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Remove node_modules/ and package-lock.json, then run `npm install`",
   "bin": {
     "flush-npm": "./cli.js"
