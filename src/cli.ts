@@ -1,9 +1,15 @@
 #!/usr/bin/env node
-
-import execa from 'execa'
+import del from 'del'
 import {existsSync} from 'fs'
+import npmRun from 'npm-run'
 import ora from 'ora'
 import path from 'path'
+
+const spinner = ora('Removing node_modules')
+
+const exportFunctions = {
+  installDeps,
+}
 
 // It calls the function only if executed through the command line
 if (require.main === module) {
@@ -12,26 +18,20 @@ if (require.main === module) {
   main(pathArg)
 }
 
-async function main(rootDir?: string): Promise<void> {
+async function main(rootDir?: string): Promise<undefined> {
   const cwd = rootDir || process.cwd()
   const isNpmPackage = existsSync(path.join(cwd, 'package.json'))
   if (!isNpmPackage) {
     console.log('Not an npm package')
-    return
+    return process.exit(126)
   }
 
   const nodeModulesPath = path.join(cwd, 'node_modules')
   const hasNodeModules = existsSync(nodeModulesPath)
-  const spinner = ora('Removing node_modules')
   spinner.start()
   if (hasNodeModules) {
-    try {
-      await execa.command(`rm -rf ${nodeModulesPath.toString()}`)
-      spinner.succeed()
-    } catch (error) {
-      spinner.stop()
-      console.error(error.message)
-    }
+    await del([nodeModulesPath])
+    spinner.succeed()
   } else {
     spinner.info('no node_modules')
   }
@@ -41,12 +41,8 @@ async function main(rootDir?: string): Promise<void> {
   spinner.text = 'Removing package-lock.json'
   spinner.start()
   if (hasPagkageLockJson) {
-    try {
-      await execa.command(`rm ${packageLockPath.toString()}`)
-      spinner.succeed()
-    } catch (error) {
-      spinner.info('no package-lock.json')
-    }
+    await del([packageLockPath])
+    spinner.succeed()
   } else {
     spinner.info('no package-lock.json')
   }
@@ -54,12 +50,23 @@ async function main(rootDir?: string): Promise<void> {
   spinner.text = 'Installing dependencies'
   spinner.start()
   try {
-    await execa.command(`cd ${cwd}`)
-    await execa.command('npm install')
+    await exportFunctions.installDeps(cwd)
     spinner.succeed()
+    return
   } catch (error) {
-    spinner.stopAndPersist(error.message)
+    spinner.stopAndPersist({text: error.message})
+    return
   }
 }
 
-export {main}
+function installDeps(rootDir: string): Promise<Error | undefined> {
+  return new Promise((resolve, reject) => {
+    npmRun.exec('npm install', {cwd: rootDir}, err => {
+      if (err) reject(err)
+
+      resolve(undefined)
+    })
+  })
+}
+
+export {main, spinner, exportFunctions}

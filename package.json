@@ -9,7 +9,7 @@
   "scripts": {
     "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js && chmod +x cli.js",
     "prepack": "npm run build",
-    "test": "jest --coverage --coverageReporters='text'"
+    "test": "jest --coverage --coverageReporters='text' --forceExit --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -25,8 +25,11 @@
   },
   "homepage": "https://github.com/thaicodingdev/flush-npm#readme",
   "dependencies": {
+    "del": "6.0.0",
     "execa": "5.0.0",
-    "ora": "5.4.0"
+    "npm-run": "5.0.1",
+    "ora": "5.4.0",
+    "test-app": "file:test_npm_package"
   },
   "devDependencies": {
     "@thaicoding/eslint-config": "2.0.0",
@@ -39,7 +42,7 @@
     "esbuild-jest": "0.5.0",
     "fsify": "4.0.2",
     "jest": "26.6.3",
-    "test-console": "1.1.0",
+    "jest-mock-process": "1.4.0",
     "ts-node": "9.1.1",
     "typescript": "4.2.4"
   },
