@@ -250,6 +250,46 @@ describe('flush-npm', () => {
     mockInstallDeps.mockRestore()
     mockSpinnerStop.mockRestore()
   })
+
+  it('remove node_modules, remove package-lock.json, and install dependencies', async () => {
+    const dependency = 'is-number'
+    const dependencyVersion = '7.0.0'
+    const structure = [
+      {
+        type: Fsify.DIRECTORY,
+        name: testDir,
+        contents: [
+          {
+            type: Fsify.FILE,
+            name: 'package.json',
+            contents: JSON.stringify({
+              name: 'test-app',
+              version: '1.0.0',
+              dependencies: {
+                [dependency]: dependencyVersion,
+              },
+            }),
+          },
+          {
+            type: Fsify.DIRECTORY,
+            name: 'node_modules',
+            contents: [],
+          },
+          {
+            type: Fsify.FILE,
+            name: 'package-lock.json',
+            contents: 'data',
+          },
+        ],
+      },
+    ]
+
+    const packageDir = await fsify(structure)
+      .then(structure => structure[0].name)
+      .then(path => path)
+
+    expect(await main(packageDir)).toBe(undefined)
+  })
 })
 
 async function cleanupTestDir() {

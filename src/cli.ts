@@ -12,14 +12,14 @@ const exportFunctions = {
 }
 
 // It calls the function only if executed through the command line
+/* istanbul ignore if */
 if (require.main === module) {
   const pathArg = process.argv.slice(2, 3)[0]
   if (pathArg) console.log(`flush-npm in ${pathArg}`)
   main(pathArg)
 }
 
-async function main(rootDir?: string): Promise<undefined> {
-  const cwd = rootDir || process.cwd()
+async function main(cwd: string = process.cwd()): Promise<undefined> {
   const isNpmPackage = existsSync(path.join(cwd, 'package.json'))
   if (!isNpmPackage) {
     console.log('Not an npm package')
@@ -62,6 +62,7 @@ async function main(rootDir?: string): Promise<undefined> {
 function installDeps(rootDir: string): Promise<Error | undefined> {
   return new Promise((resolve, reject) => {
     npmRun.exec('npm install', {cwd: rootDir}, err => {
+      /* istanbul ignore if */
       if (err) reject(err)
 
       resolve(undefined)
