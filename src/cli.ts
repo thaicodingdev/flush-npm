@@ -5,18 +5,22 @@ import {existsSync} from 'fs'
 import ora from 'ora'
 import path from 'path'
 
-const cwd = process.cwd()
-const isNpmPackage = existsSync(path.join(cwd, 'package.json'))
-if (isNpmPackage) main()
-else console.log('Not an npm package')
+main()
+async function main(rootDir?: string): Promise<void> {
+  const cwd = rootDir || process.cwd()
+  const isNpmPackage = existsSync(path.join(cwd, 'package.json'))
+  if (!isNpmPackage) {
+    console.log('Not an npm package')
+    return
+  }
 
-async function main() {
-  const hasNodeModules = existsSync(path.join(cwd, 'node_modules'))
+  const nodeModulesPath = path.join(cwd, 'node_modules')
+  const hasNodeModules = existsSync(nodeModulesPath)
   const spinner = ora('Removing node_modules')
   spinner.start()
   if (hasNodeModules) {
     try {
-      await execa('rm', ['-rf', 'node_modules'])
+      await execa.command(`rm -rf ${nodeModulesPath.toString()}`)
       spinner.succeed()
     } catch (error) {
       spinner.stop()
@@ -26,12 +30,13 @@ async function main() {
     spinner.info('no node_modules')
   }
 
-  const hasPagkageLockJson = existsSync(path.join(cwd, 'package-lock.json'))
+  const packageLockPath = path.join(cwd, 'package-lock.json')
+  const hasPagkageLockJson = existsSync(packageLockPath)
   spinner.text = 'Removing package-lock.json'
   spinner.start()
   if (hasPagkageLockJson) {
     try {
-      await execa('rm', ['package-lock.json'])
+      await execa.command(`rm ${packageLockPath.toString()}`)
       spinner.succeed()
     } catch (error) {
       spinner.info('no package-lock.json')
@@ -43,9 +48,12 @@ async function main() {
   spinner.text = 'Installing dependencies'
   spinner.start()
   try {
-    await execa('npm', ['install'])
+    await execa.command(`cd ${cwd}`)
+    await execa.command('npm install')
     spinner.succeed()
   } catch (error) {
     spinner.stopAndPersist(error.message)
   }
 }
+
+export {main}
