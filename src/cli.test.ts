@@ -20,9 +20,7 @@ describe('flush-npm', () => {
   mockConsoleLog()
   mockProcessStderr()
 
-  const mockSpinner = jest
-    .spyOn(spinner, 'info')
-    .mockImplementation(() => ora())
+  const mockSpinner = jest.spyOn(spinner, 'info')
 
   afterEach(async () => {
     await cleanupTestDir()
@@ -217,9 +215,7 @@ describe('flush-npm', () => {
       .mockImplementation(() => {
         return new Promise((resolve, reject) => reject(new Error(errorMsg)))
       })
-    const mockSpinnerStop = jest
-      .spyOn(spinner, 'stopAndPersist')
-      .mockImplementation(() => ora())
+    const mockSpinnerStop = jest.spyOn(spinner, 'stopAndPersist')
 
     const dependency = 'is-number'
     const dependencyVersion = '7.0.0'

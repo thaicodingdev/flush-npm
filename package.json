@@ -9,7 +9,7 @@
   "scripts": {
     "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js && chmod +x cli.js",
     "prepack": "npm run build",
-    "test": "jest --coverage --coverageReporters='text' --forceExit --detectOpenHandles"
+    "test": "jest --coverage --coverageReporters='text'"
   },
   "repository": {
     "type": "git",
