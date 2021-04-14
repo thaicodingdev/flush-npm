@@ -5,7 +5,13 @@ import {existsSync} from 'fs'
 import ora from 'ora'
 import path from 'path'
 
-main()
+// It calls the function only if executed through the command line
+if (require.main === module) {
+  const pathArg = process.argv.slice(2, 3)[0]
+  if (pathArg) console.log(`flush-npm in ${pathArg}`)
+  main(pathArg)
+}
+
 async function main(rootDir?: string): Promise<void> {
   const cwd = rootDir || process.cwd()
   const isNpmPackage = existsSync(path.join(cwd, 'package.json'))
