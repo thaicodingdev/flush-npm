@@ -1,41 +1,48 @@
 #!/usr/bin/env node
-
-import execa from 'execa'
+import del from 'del'
 import {existsSync} from 'fs'
+import npmRun from 'npm-run'
 import ora from 'ora'
 import path from 'path'
 
-const cwd = process.cwd()
-const isNpmPackage = existsSync(path.join(cwd, 'package.json'))
-if (isNpmPackage) main()
-else console.log('Not an npm package')
+const spinner = ora('Removing node_modules')
 
-async function main() {
-  const hasNodeModules = existsSync(path.join(cwd, 'node_modules'))
-  const spinner = ora('Removing node_modules')
+const exportFunctions = {
+  installDeps,
+}
+
+// It calls the function only if executed through the command line
+if (require.main === module) {
+  const pathArg = process.argv.slice(2, 3)[0]
+  if (pathArg) console.log(`flush-npm in ${pathArg}`)
+  main(pathArg)
+}
+
+async function main(rootDir?: string): Promise<undefined> {
+  const cwd = rootDir || process.cwd()
+  const isNpmPackage = existsSync(path.join(cwd, 'package.json'))
+  if (!isNpmPackage) {
+    console.log('Not an npm package')
+    return process.exit(126)
+  }
+
+  const nodeModulesPath = path.join(cwd, 'node_modules')
+  const hasNodeModules = existsSync(nodeModulesPath)
   spinner.start()
   if (hasNodeModules) {
-    try {
-      await execa('rm', ['-rf', 'node_modules'])
-      spinner.succeed()
-    } catch (error) {
-      spinner.stop()
-      console.error(error.message)
-    }
+    await del([nodeModulesPath])
+    spinner.succeed()
   } else {
     spinner.info('no node_modules')
   }
 
-  const hasPagkageLockJson = existsSync(path.join(cwd, 'package-lock.json'))
+  const packageLockPath = path.join(cwd, 'package-lock.json')
+  const hasPagkageLockJson = existsSync(packageLockPath)
   spinner.text = 'Removing package-lock.json'
   spinner.start()
   if (hasPagkageLockJson) {
-    try {
-      await execa('rm', ['package-lock.json'])
-      spinner.succeed()
-    } catch (error) {
-      spinner.info('no package-lock.json')
-    }
+    await del([packageLockPath])
+    spinner.succeed()
   } else {
     spinner.info('no package-lock.json')
   }
@@ -43,9 +50,23 @@ async function main() {
   spinner.text = 'Installing dependencies'
   spinner.start()
   try {
-    await execa('npm', ['install'])
+    await exportFunctions.installDeps(cwd)
     spinner.succeed()
+    return
   } catch (error) {
-    spinner.stopAndPersist(error.message)
+    spinner.stopAndPersist({text: error.message})
+    return
   }
 }
+
+function installDeps(rootDir: string): Promise<Error | undefined> {
+  return new Promise((resolve, reject) => {
+    npmRun.exec('npm install', {cwd: rootDir}, err => {
+      if (err) reject(err)
+
+      resolve(undefined)
+    })
+  })
+}
+
+export {main, spinner, exportFunctions}
