@@ -4,9 +4,8 @@ import Fsify from 'fsify'
 import {
   mockConsoleLog,
   mockProcessExit,
-  mockProcessStderr
+  mockProcessStderr,
 } from 'jest-mock-process'
-import ora from 'ora'
 
 import {exportFunctions, main, spinner} from './cli'
 
