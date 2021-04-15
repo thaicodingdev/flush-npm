@@ -1,3 +1,4 @@
+import assert from 'assert'
 import del from 'del'
 import {existsSync} from 'fs'
 import Fsify from 'fsify'
@@ -170,8 +171,9 @@ describe('flush-npm', () => {
       .then(path => path)
 
     await main(packageDir)
-    const msgs = mockSpinner.mock.calls.map(item => item[0])
-    expect(msgs.includes('no package-lock.json')).toBe(false)
+    assert.notDeepStrictEqual(mockSpinner.mock.calls, [
+      ['no package-lock.json'],
+    ])
   })
 
   it('installs dependencies', async () => {
@@ -244,8 +246,8 @@ describe('flush-npm', () => {
 
     await main(packageDir)
 
-    const msg = mockSpinnerStop.mock.calls.map(item => item[0])[0].text
-    expect(msg).toBe(errorMsg)
+    assert.deepStrictEqual(mockSpinnerStop.mock.calls[0][0].text, errorMsg)
+
     mockInstallDeps.mockRestore()
     mockSpinnerStop.mockRestore()
   })
