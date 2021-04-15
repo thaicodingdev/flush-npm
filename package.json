@@ -9,8 +9,8 @@
   "scripts": {
     "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js && chmod +x cli.js",
     "preversion": "npm test",
-    "version": "npm run build && git add .",
     "postversion": "git push && git push --tags",
+    "prepack": "npm run build",
     "test": "jest --coverage --coverageReporters='text'",
     "lint": "eslint --fix",
     "format": "prettier --write"
