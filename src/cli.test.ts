@@ -21,9 +21,13 @@ describe('flush-npm', () => {
 
   const mockSpinner = jest.spyOn(spinner, 'info')
 
-  afterEach(async () => {
+  beforeEach(async () => {
     await cleanupTestDir()
-    mockSpinner.mockReset()
+    mockSpinner.mockClear()
+  })
+
+  afterAll(async () => {
+    await cleanupTestDir()
   })
 
   it('exits if not an npm package', async () => {
@@ -202,7 +206,6 @@ describe('flush-npm', () => {
       .then(path => path)
 
     await main(packageDir)
-    console.log(`${packageDir}/node_modules/${dependency}`)
     const hasDependency = existsSync(`${packageDir}/node_modules/${dependency}`)
     expect(hasDependency).toBe(true)
   })
@@ -234,6 +237,16 @@ describe('flush-npm', () => {
               },
             }),
           },
+          {
+            type: Fsify.DIRECTORY,
+            name: 'node_modules',
+            contents: [],
+          },
+          {
+            type: Fsify.FILE,
+            name: 'package-lock.json',
+            contents: 'data',
+          },
         ],
       },
     ]
@@ -244,7 +257,7 @@ describe('flush-npm', () => {
 
     await main(packageDir)
 
-    expect(mockSpinnerStop.mock.calls).toEqual([[{text: errorMsg}]])
+    expect(mockSpinnerStop.mock.calls[2]).toEqual([{text: errorMsg}])
 
     mockInstallDeps.mockRestore()
     mockSpinnerStop.mockRestore()
