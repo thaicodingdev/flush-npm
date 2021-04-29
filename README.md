@@ -3,6 +3,8 @@ flush-npm
 
 ![npm](https://img.shields.io/npm/dt/flush-npm)
 
+![flush-npm example](/flush-npm.gif?raw=true "flush-npm example")
+
 # Usage
 Install it globally.
 ```sh-session
