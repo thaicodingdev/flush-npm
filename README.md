@@ -1,7 +1,7 @@
 flush-npm
 =====
 
-![npm](https://img.shields.io/npm/dt/flush-npm)
+[![npm](https://img.shields.io/npm/dt/flush-npm)](https://npmjs.org/package/flush-npm)
 
 ![flush-npm example](/flush-npm.gif?raw=true "flush-npm example")
 
