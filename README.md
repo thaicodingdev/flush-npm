@@ -1,6 +1,8 @@
 flush-npm
 =====
 
+![npm](https://img.shields.io/npm/dt/flush-npm)
+
 # Usage
 Install it globally.
 ```sh-session
