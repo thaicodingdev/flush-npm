@@ -2,10 +2,26 @@
   "name": "flush-npm",
   "version": "1.0.12",
   "description": "Remove node_modules/ and package-lock.json, then run `npm install`",
+  "keywords": [
+    "npm"
+  ],
+  "homepage": "https://github.com/thaicodingdev/flush-npm#readme",
+  "bugs": {
+    "url": "https://github.com/thaicodingdev/flush-npm/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thaicodingdev/flush-npm.git"
+  },
+  "license": "MIT",
+  "author": "thaicodingdev <thaicodingstudio@gmail.com> (https://thaicoding.dev/)",
+  "main": "cli.js",
   "bin": {
     "flush-npm": "cli.js"
   },
-  "main": "cli.js",
+  "files": [
+    "cli.js"
+  ],
   "scripts": {
     "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js --minify",
     "preversion": "npm test",
@@ -15,19 +31,20 @@
     "lint": "eslint --fix",
     "format": "prettier --write"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/thaicodingdev/flush-npm.git"
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
   },
-  "keywords": [
-    "npm"
-  ],
-  "author": "thaicodingdev <thaicodingstudio@gmail.com> (https://thaicoding.dev/)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/thaicodingdev/flush-npm/issues"
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint",
+      "npm run format"
+    ]
   },
-  "homepage": "https://github.com/thaicodingdev/flush-npm#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "dependencies": {
     "del": "6.0.0",
     "npm-run": "5.0.1",
@@ -51,19 +68,5 @@
     "simple-git-hooks": "2.3.1",
     "ts-node": "9.1.1",
     "typescript": "4.2.4"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "npm run lint",
-      "npm run format"
-    ]
   }
 }
