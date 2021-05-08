@@ -4,3 +4,4 @@ jest.config.ts
 tsconfig.json
 .eslintrc.js
 .prettierrc.js
+flush-npm.gif
