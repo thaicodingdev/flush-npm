@@ -8,7 +8,7 @@
   "main": "cli.js",
   "scripts": {
     "postinstall": "npm run build",
-    "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js",
+    "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js --minify",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
     "prepack": "npm run build",
