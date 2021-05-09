@@ -23,7 +23,7 @@
     "cli.js"
   ],
   "scripts": {
-    "build": "esbuild src/cli.ts --bundle --platform=node --outfile=cli.js --minify",
+    "build": "esbuild src/cli.ts --bundle --platform=node --target=node10.4 --outfile=cli.js --minify",
     "preversion": "npm test",
     "postversion": "git push && git push --tags",
     "prepack": "npm run build",
