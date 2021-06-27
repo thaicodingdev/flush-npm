@@ -7,7 +7,14 @@ flush-npm
 ![flush-npm example](/flush-npm.gif?raw=true "flush-npm example")
 
 # Usage
-Install it globally.
+Install it globally via Volta or npm.
+
+## Use Volta
+```sh-session
+$ volta install flush-npm
+```
+
+## Use npm
 ```sh-session
 $ npm i -g flush-npm
 ```
