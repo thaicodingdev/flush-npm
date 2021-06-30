@@ -48,7 +48,7 @@
   "dependencies": {
     "del": "6.0.0",
     "npm-run": "5.0.1",
-    "ora": "5.4.0"
+    "ora": "5.4.1"
   },
   "devDependencies": {
     "@thaicoding/eslint-config": "2.0.0",
