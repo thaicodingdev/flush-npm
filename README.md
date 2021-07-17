@@ -7,19 +7,19 @@ flush-npm
 ![flush-npm example](/flush-npm.gif?raw=true "flush-npm example")
 
 # Usage
-Install it globally via Volta or npm.
+Install it globally via Volta or npm or use it with `npx flush-npm`
 
-## Use Volta
+## Install via Volta
 ```sh-session
 $ volta install flush-npm
 ```
 
-## Use npm
+## Install via npm
 ```sh-session
 $ npm i -g flush-npm
 ```
 
-When run `flush-npm` in your project directory, it will:
+## When run `flush-npm` in your project directory, it will:
 1. Remove `node_modules/`
 2. Remove `package-lock.json`
 3. Run `npm install`
