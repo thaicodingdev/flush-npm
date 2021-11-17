@@ -40,23 +40,15 @@
       "npm run format"
     ]
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
   "dependencies": {
     "del": "6.0.0",
     "npm-run": "5.0.1",
     "ora": "5.4.0"
   },
   "devDependencies": {
-    "@thaicoding/eslint-config": "2.0.0",
-    "@thaicoding/prettier-config": "1.2.1",
     "@types/jest": "26.0.22",
     "@types/node": "14.14.39",
     "@typescript-eslint/parser": "4.22.0",
-    "cz-conventional-changelog": "3.3.0",
     "esbuild": "0.11.11",
     "esbuild-jest": "0.5.0",
     "eslint": "7.24.0",
