@@ -1,6 +1,6 @@
 {
   "name": "flush-npm",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Remove node_modules/ and package-lock.json, then run `npm install`",
   "keywords": [
     "npm"
